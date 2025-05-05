@@ -21,11 +21,9 @@ def check_winner(board):
         if board[0][col] == board[1][col] == board[2][col] and board[0][col] != " ":
             return True
 
-    # Vérification de la diagonale principale
+    # Vérification des diagonales
     if board[0][0] == board[1][1] == board[2][2] and board[0][0] != " ":
         return True
-
-    # Vérification de la diagonale secondaire
     if board[0][2] == board[1][1] == board[2][0] and board[0][2] != " ":
         return True
 
@@ -33,28 +31,36 @@ def check_winner(board):
 
 # Fonction principale qui lance une partie de morpion
 def tic_tac_toe():
-    board = [[" "]*3 for _ in range(3)]  # Création du plateau vide
-    player = "X"  # Le joueur X commence
+    board = [[" "]*3 for _ in range(3)]
+    player = "X"
 
-    # Boucle de jeu jusqu'à ce qu'un joueur gagne
+    # Boucle de jeu
     while not check_winner(board):
         print_board(board)
-        row = int(input("Enter row (0, 1, or 2) for player " + player + ": "))
-        col = int(input("Enter column (0, 1, or 2) for player " + player + ": "))
-        
-        # Si la case est vide, on y place le symbole du joueur
-        if board[row][col] == " ":
-            board[row][col] = player
-            if player == "X":
-                player = "O"
-            else:
-                player = "X"
-        else:
-            print("That spot is already taken! Try again.")
 
-    # Affichage final du plateau et du gagnant
+        try:
+            row = int(input("Enter row (0, 1, or 2) for player " + player + ": "))
+            col = int(input("Enter column (0, 1, or 2) for player " + player + ": "))
+
+            # Vérifie que les coordonnées sont valides
+            if row not in [0, 1, 2] or col not in [0, 1, 2]:
+                print("Invalid coordinates! Try values 0, 1, or 2.")
+                continue
+
+            # Vérifie que la case est vide
+            if board[row][col] != " ":
+                print("That spot is already taken! Try again.")
+                continue
+
+            # Placement du symbole
+            board[row][col] = player
+            player = "O" if player == "X" else "X"
+
+        except ValueError:
+            print("Invalid input! Please enter numbers only.")
+
     print_board(board)
-    print("Player " + player + " wins!")
+    print("Player " + ("O" if player == "X" else "X") + " wins!")
 
 # Point d'entrée du programme
 tic_tac_toe()
